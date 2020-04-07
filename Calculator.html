@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>简易计算器</title>
+    <link rel="stylesheet" href="cal.css">
+</head>
+<body>
+    <div id="calculator">
+        <div class="blank"></div>
+        <div class="cal-display">
+
+
+            
+            <input type="text" id="cal-input">
+           
+        </div>
+        <div class="numkeyboard">
+            <ul class="num">
+                <li class="keyboard" onclick="clearboard()">C</li>
+                <li class="keyboard" onclick="zfh()">±</li>
+                <li class="keyboard" onclick="backspace()">⬅</li>
+                <li class="keyboard-operation" onclick="output('/')">÷</li>
+                <li class="keyboard" onclick="output('7')">7</li>
+                <li class="keyboard" onclick="output('8')">8</li>
+                <li class="keyboard" onclick="output('9')">9</li>
+                <li class="keyboard-operation" onclick="output('*')">×</li>
+                <li class="keyboard" onclick="output('4')">4</li>
+                <li class="keyboard" onclick="output('5')">5</li>
+                <li class="keyboard" onclick="output('6')">6</li>
+                <li class="keyboard-operation" onclick="output('-')">-</li>
+                <li class="keyboard" onclick="output('1')">1</li>
+                <li class="keyboard" onclick="output('2')">2</li>
+                <li class="keyboard" onclick="output('3')">3</li>
+                <li class="keyboard-operation" onclick="output('+')">+</li>
+                <li class="keyboard" onclick="output('0')">0</li>
+                <li class="keyboard" onclick="output('.')">.</li>
+                <li class="keyboard-equal" onclick="result()">=</li>
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <script>
+
+        //记录最后一个输入的值
+        var lastInput ="0";
+        //判断输入值是否是运算符号
+        function judge(key){
+            if(key=="+"||key=="-"||key=="*"||key=="/"||key=="."){
+                return true;
+            };
+            return false;
+        }
+
+        
+        // 屏幕输出
+        function output(keyboard){
+            var flag1 = judge(keyboard);
+            var flag2 = judge(lastInput);
+            // 获取数值
+            var shuchu = document.getElementById('cal-input').value;
+            // 在屏幕上输出数值
+            if(!(flag1&&flag2)){
+            document.getElementById('cal-input').value += keyboard;
+            lastInput = keyboard;
+            }
+        }
+
+
+        // 计算结果
+        function result(){
+            var shuchu = document.getElementById('cal-input').value;
+            if(shuchu.indexOf('=') != -1){
+                var i = shuchu.lastIndexOf('=');
+                shuchu = shuchu.substring(i+1,shuchu.length);
+            }
+            var jieguo = math.eval(shuchu);
+            document.getElementById('cal-input').value = jieguo;
+        }
+
+
+        // 清空屏幕
+        function clearboard(){
+            var shuchu = document.getElementById('cal-input').value;
+            
+            document.getElementById('cal-input').value = '';
+            
+        }
+
+
+        // 退格
+        function backspace(){
+            var tuige = document.getElementById('cal-input');
+            tuige.value = tuige.value.substring(0,tuige.value.length-1);
+        }
+
+
+        // 正负号
+        function zfh(){
+            var zfh = document.getElementById('cal-input').value;
+            if(zfh.charCodeAt(0)==45){
+                document.getElementById('cal-input').value = zfh.substr(1,zfh.length);
+            }
+            else{
+                document.getElementById('cal-input').value = '-' + zfh;
+            }
+        }
+        
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/4.0.1/math.min.js"></script>
+    <script>
+        // 解决计算误差，提高计算精度
+        math.config({number: 'BigNumber'})
+        console.log(`math--- 0.1+0.2=   ${math.eval('0.1+0.2')}`)
+        console.log(`math---17.45*3*0.9  ${math.eval('17.45*3*0.9')}`)
+        console.log(`math---17.45*0.9*3  ${math.eval('17.45*0.9*3')}`)
+    </script>
+
+</body>
+</html>
